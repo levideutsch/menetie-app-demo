@@ -49,6 +49,7 @@ function App() {
   return (
     <div>
       Menitie app demo
+      <h1>Hello Dovi and Yossi</h1>
       <Auth />
 
 
