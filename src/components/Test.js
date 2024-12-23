@@ -63,7 +63,7 @@ function Test() {
         type="number"
         onChange={(e) => setNewMovieReleaseDate(Number(e.target.value))}
         />
-        <button onClick={onSubmitMovie}>submit movie hey</button>
+        <button onClick={onSubmitMovie}>submit movie hey more chanes</button>
       </div>
   
   
