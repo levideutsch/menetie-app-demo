@@ -1,81 +1,33 @@
-import Auth from "./components/auth";
-import { db } from "./config/firebase-config"
-import { useState, useEffect } from "react";
-import { getDocs, collection, addDoc, deleteDoc, doc } from "firebase/firestore";
 
+import React, { useContext, useState } from "react";
+import { Router, Routes, Route, useLocation } from "react-router-dom";
+import Test from "./components/Test";
+import ExploreOrList from "./components/sign-up/ExploreOrList";
+import { GlobalStylesContext } from "./context/GlobalStyles";
+import { Button } from "@mui/material";
 
 function App() {
-  const [movieList, setMovieList] = useState([])
-  const [newMovieTitle, setNewMovieTitle] = useState("")
-  const [newMovieReleaseDate, setNewMovieReleaseDate] = useState(0)
-
-  const moviesCollectionRef = collection(db, "movies")
-
-  useEffect(() => {
-
-    const getMovieList = async() => {
-      try {
-        const data = await getDocs(moviesCollectionRef)
-        const filteredData = data.docs.map((doc) => ({...doc.data(), id: doc.id}))
-        console.log(filteredData)
-        setMovieList(filteredData)
-      } catch (err){
-        console.log(err)
-      }
-    }
-
-    getMovieList()
-  }, [])
-
-
-  const onSubmitMovie = async () => {
-    try {
-      await addDoc(moviesCollectionRef, 
-        {
-        title: newMovieTitle, 
-        releaseDate: newMovieReleaseDate
-       }
-      )
-    } catch (err) {
-      console.log(err)
-    }
-  }
-
-  const deleteMovie = async (id) => {
-    const movieDoc = doc(db, "movies", id)
-    await deleteDoc(movieDoc)
-  }
+  const {colors, fonts} = useContext(GlobalStylesContext)
 
   return (
     <div>
-      Menitie app demo
-      <h1>Hello Dovi and Yossi</h1>
-      <Auth />
+
+      {/* App
+      <h1 style={{ ...colors.darkBlue, ...fonts.quicksandFont }}>
+        Dark Blue with Quicksand Font
+      </h1>
+
+      <Button style={{ ...colors.darkBlue, ...fonts.quicksandFont }}>Click here for stuff</Button>
+ */}
 
 
-    <div style={{marginTop: "100px"}}>
-      <input  
-      placeholder="Movie title" 
-      type="text"
-      onChange={(e) =>setNewMovieTitle(e.target.value)}
-      />
-      <input 
-      placeholder="Release date"
-      type="number"
-      onChange={(e) => setNewMovieReleaseDate(Number(e.target.value))}
-      />
-      <button onClick={onSubmitMovie}>submit movie</button>
-    </div>
 
 
-      <div style={{marginTop: "100px"}}>
-        {movieList?.map((movie) => (
-          <div key={movie.id}>
-            {movie.title}
-            <button onClick={() => deleteMovie(movie.id)}>delete</button>
-          </div>
-        ))}
-      </div>
+      <Routes>
+        <Route path="/test" element={<Test />}/>
+        <Route path="/signup" element={<ExploreOrList />}/>
+      </Routes>
+
     </div>
   );
 }
